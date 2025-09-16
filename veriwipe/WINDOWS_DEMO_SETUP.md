@@ -9,11 +9,13 @@ Since you're on Windows, here are the easiest ways to prepare for your demonstra
 If you don't want to build the ISO yourself, you can create a simulated demo:
 
 1. **Download Ubuntu 22.04.3 Desktop ISO**:
+
    ```
    https://releases.ubuntu.com/22.04/ubuntu-22.04.3-desktop-amd64.iso
    ```
 
 2. **Create Bootable USB with Rufus**:
+
    - Download Rufus: https://rufus.ie/
    - Select Ubuntu ISO
    - Choose your USB drive (8GB+)
@@ -70,11 +72,13 @@ For your demonstration, you can run VeriWipe directly on Ubuntu without building
 ### **Pre-Demo Preparation** (30 minutes before)
 
 1. **Create Ubuntu Live USB**:
+
    - Use Rufus to create Ubuntu 22.04.3 live USB
    - Test boot on target computer
    - Copy VeriWipe files to USB or cloud storage
 
 2. **Prepare Target System**:
+
    - Insert test storage device (USB stick to actually wipe)
    - Note BIOS boot key (F12, F2, ESC, Del)
    - Ensure USB boot is enabled in BIOS
@@ -88,21 +92,28 @@ For your demonstration, you can run VeriWipe directly on Ubuntu without building
 ### **Live Demo Flow**
 
 #### **Phase 1: Introduction** (1 minute)
+
 **You Say**:
-> *"I'll demonstrate VeriWipe - an AI-powered secure data wiping solution. This USB contains Ubuntu Linux with our custom VeriWipe software."*
+
+> _"I'll demonstrate VeriWipe - an AI-powered secure data wiping solution. This USB contains Ubuntu Linux with our custom VeriWipe software."_
 
 #### **Phase 2: Boot Ubuntu** (2 minutes)
+
 **Actions**:
+
 1. Insert Ubuntu USB and restart
 2. Press boot menu key (F12/F2)
 3. Select USB device
 4. Wait for Ubuntu desktop
 
 **Commentary**:
-> *"We're booting into a secure Linux environment. This isolates our wiping operations from the host system for maximum security."*
+
+> _"We're booting into a secure Linux environment. This isolates our wiping operations from the host system for maximum security."_
 
 #### **Phase 3: Setup VeriWipe** (2 minutes)
+
 **Actions**:
+
 1. Open terminal
 2. Copy VeriWipe from USB/download
 3. Install dependencies:
@@ -112,46 +123,59 @@ For your demonstration, you can run VeriWipe directly on Ubuntu without building
    ```
 
 **Commentary**:
-> *"I'm installing VeriWipe's AI components. In our production ISO, this would be pre-installed."*
+
+> _"I'm installing VeriWipe's AI components. In our production ISO, this would be pre-installed."_
 
 #### **Phase 4: Launch VeriWipe** (1 minute)
+
 **Actions**:
+
 ```bash
 cd veriwipe
 sudo python3 veriwipe.py --gui
 ```
 
 **Commentary**:
-> *"Here's our one-click interface. The AI engine is now analyzing connected storage devices."*
+
+> _"Here's our one-click interface. The AI engine is now analyzing connected storage devices."_
 
 #### **Phase 5: AI Device Detection** (2 minutes)
+
 **Actions**:
+
 1. Click "Detect Devices"
 2. Show device cards appearing
 3. Explain AI method selection
 
 **Commentary**:
-> *"Watch our AI identify each device type and automatically select the optimal wiping method. For SSDs, it chooses hardware secure erase. For USB drives, multi-pass overwrite."*
+
+> _"Watch our AI identify each device type and automatically select the optimal wiping method. For SSDs, it chooses hardware secure erase. For USB drives, multi-pass overwrite."_
 
 #### **Phase 6: Live Wipe Demo** (3 minutes)
+
 **Actions**:
+
 1. Select test USB device
 2. Click "Secure Wipe"
 3. Show warning dialogs
 4. Confirm and watch progress
 
 **Commentary**:
-> *"I'm now wiping this test USB drive. Notice the multiple safety confirmations and real-time progress updates. The AI is following NIST SP 800-88 standards."*
+
+> _"I'm now wiping this test USB drive. Notice the multiple safety confirmations and real-time progress updates. The AI is following NIST SP 800-88 standards."_
 
 #### **Phase 7: Certificate Generation** (2 minutes)
+
 **Actions**:
+
 1. Show success message
 2. Open PDF certificate
 3. Scan QR code with phone
 4. Show verification website
 
 **Commentary**:
-> *"Here's our cryptographic proof of data destruction. This certificate is tamper-proof and legally admissible for compliance reporting."*
+
+> _"Here's our cryptographic proof of data destruction. This certificate is tamper-proof and legally admissible for compliance reporting."_
 
 ---
 
@@ -160,16 +184,19 @@ sudo python3 veriwipe.py --gui
 If technical issues occur during live demo:
 
 ### **Plan B: Video Demo**
+
 - Record your demo beforehand
 - Show working VeriWipe in action
 - Focus on explaining AI features
 
 ### **Plan C: Certificate Focus**
+
 - Generate sample certificates beforehand
 - Show verification website working
 - Emphasize security and compliance features
 
 ### **Plan D: Presentation Mode**
+
 - Use slides to explain technical architecture
 - Show code snippets demonstrating AI logic
 - Focus on innovation and market impact
@@ -179,18 +206,21 @@ If technical issues occur during live demo:
 ## 🎯 **Key Demo Success Tips**
 
 ### **Technical Preparation**
+
 - **Practice everything** at least twice
 - **Have backup USB drives** ready
 - **Know your target computer's** boot sequence
 - **Test all dependencies** beforehand
 
 ### **Presentation Skills**
+
 - **Keep it simple** - avoid deep technical details
 - **Focus on benefits** - what problems it solves
 - **Show confidence** - you built this amazing solution
 - **Engage audience** - ask questions, explain value
 
 ### **Timing Management**
+
 - **2 minutes**: Setup and boot
 - **3 minutes**: VeriWipe demo
 - **2 minutes**: AI explanation

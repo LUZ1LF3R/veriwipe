@@ -3,6 +3,7 @@
 ## 📋 **Pre-Demo Checklist**
 
 ### **Hardware Requirements**
+
 - ✅ Target system (laptop/desktop for wiping demonstration)
 - ✅ VeriWipe USB drive (8GB+ with ISO burned)
 - ✅ Test storage device (USB stick or old drive to actually wipe)
@@ -13,6 +14,7 @@
 ### **Pre-Demo Preparation** (Do This 30 Minutes Before)
 
 1. **Create VeriWipe USB Drive**:
+
 ```bash
 # On Windows (use Rufus or similar)
 # 1. Download VeriWipe ISO from iso_builder/output/
@@ -21,6 +23,7 @@
 ```
 
 2. **Prepare Target System**:
+
 ```bash
 # 1. Insert test storage device (the one you'll actually wipe)
 # 2. Boot normally and check BIOS settings
@@ -29,6 +32,7 @@
 ```
 
 3. **Test Everything**:
+
 ```bash
 # 1. Boot from VeriWipe USB (dry run)
 # 2. Verify VeriWipe application loads
@@ -42,19 +46,23 @@
 ### **Phase 1: Hook & Problem Setup** (1 minute)
 
 **You Say**:
-> *"Before I show you our solution, let me demonstrate the problem. This laptop has sensitive data on it. Watch what happens when I 'delete' files..."*
+
+> _"Before I show you our solution, let me demonstrate the problem. This laptop has sensitive data on it. Watch what happens when I 'delete' files..."_
 
 **Actions**:
+
 1. Show normal file deletion
 2. Use data recovery tool to restore files
-3. Say: *"See? Your deleted data isn't really gone. This is why people hoard old devices - fear of data breaches."*
+3. Say: _"See? Your deleted data isn't really gone. This is why people hoard old devices - fear of data breaches."_
 
 ### **Phase 2: VeriWipe Boot** (2 minutes)
 
 **You Say**:
-> *"Now let me show you VeriWipe. This USB drive contains our complete AI-powered solution. No installation needed - it runs from anywhere."*
+
+> _"Now let me show you VeriWipe. This USB drive contains our complete AI-powered solution. No installation needed - it runs from anywhere."_
 
 **Actions**:
+
 1. **Shutdown target system**
 2. **Insert VeriWipe USB drive**
 3. **Power on and press F12/F2** (boot menu key for your system)
@@ -62,69 +70,84 @@
 5. **Wait for Ubuntu desktop** to load (30-60 seconds)
 
 **Commentary While Booting**:
-> *"This is a complete Linux operating system running from USB. It's isolated from the host computer, so it can safely wipe drives without interference."*
+
+> _"This is a complete Linux operating system running from USB. It's isolated from the host computer, so it can safely wipe drives without interference."_
 
 ### **Phase 3: Launch VeriWipe** (1 minute)
 
 **You Say**:
-> *"Here's our one-click interface. This is designed so anyone - from IT professionals to regular users - can securely wipe their devices."*
+
+> _"Here's our one-click interface. This is designed so anyone - from IT professionals to regular users - can securely wipe their devices."_
 
 **Actions**:
+
 1. **Double-click VeriWipe icon** on desktop
 2. **Show the main interface** loading
 3. **Point out the clean, simple design**
 
 **Commentary**:
-> *"Notice the user-friendly interface. No complex technical settings - our AI handles all the difficult decisions automatically."*
+
+> _"Notice the user-friendly interface. No complex technical settings - our AI handles all the difficult decisions automatically."_
 
 ### **Phase 4: AI Device Detection** (2 minutes)
 
 **You Say**:
-> *"Watch our AI brain analyze the connected storage devices. It identifies each device type and selects the optimal wiping method."*
+
+> _"Watch our AI brain analyze the connected storage devices. It identifies each device type and selects the optimal wiping method."_
 
 **Actions**:
+
 1. **Click "Detect Devices" button**
 2. **Wait for scanning** (10-15 seconds)
 3. **Point to each device card** that appears
 4. **Explain what the AI discovered**:
 
 **Example Commentary**:
-> *"See here - the AI identified three devices:*
-> - *Main laptop SSD: 256GB Samsung - AI selected ATA Secure Erase*
-> - *Test USB drive: 32GB Kingston - AI selected Multi-pass Overwrite*
-> - *The AI knows that SSDs need hardware-level erasure, while USB drives need software overwriting. This intelligence prevents data recovery."*
+
+> _"See here - the AI identified three devices:_
+>
+> - _Main laptop SSD: 256GB Samsung - AI selected ATA Secure Erase_
+> - _Test USB drive: 32GB Kingston - AI selected Multi-pass Overwrite_
+> - _The AI knows that SSDs need hardware-level erasure, while USB drives need software overwriting. This intelligence prevents data recovery."_
 
 ### **Phase 5: Live Wipe Demonstration** (3-5 minutes)
 
 **You Say**:
-> *"I'll now demonstrate a real wipe on this test USB drive. This will permanently destroy all data - there's no going back."*
+
+> _"I'll now demonstrate a real wipe on this test USB drive. This will permanently destroy all data - there's no going back."_
 
 **Actions**:
+
 1. **Select the test USB device**
 2. **Click "Secure Wipe" button**
 3. **Show the warning dialog**:
 
 **Commentary for Warning**:
-> *"Notice the multiple safety confirmations. We prevent accidental wipes with clear warnings and device verification."*
+
+> _"Notice the multiple safety confirmations. We prevent accidental wipes with clear warnings and device verification."_
 
 4. **Confirm the wipe**
 5. **Show live progress updates**:
 
 **Commentary During Wipe**:
-> *"Watch the real-time progress. The AI is:*
-> - *First: Unmounting the device safely*
-> - *Second: Performing multi-pass overwrite (3 passes)*
-> - *Third: Verifying the wipe was successful*
-> - *Fourth: Generating tamper-proof logs*
 
-> *This process follows NIST SP 800-88 government standards for data sanitization."*
+> _"Watch the real-time progress. The AI is:_
+>
+> - _First: Unmounting the device safely_
+> - _Second: Performing multi-pass overwrite (3 passes)_
+> - _Third: Verifying the wipe was successful_
+> - _Fourth: Generating tamper-proof logs_
+
+> _This process follows NIST SP 800-88 government standards for data sanitization."_
 
 ### **Phase 6: Certificate Generation** (2 minutes)
 
 **You Say**:
-> *"Here's the game-changer - cryptographic proof that the wipe happened correctly."*
+
+> _"Here's the game-changer - cryptographic proof that the wipe happened correctly."_
 
 **Actions**:
+
 1. **Show success message** with certificate files
 2. **Open the PDF certificate**
 3. **Highlight key sections**:
@@ -135,43 +158,51 @@
    - QR code
 
 **Commentary**:
-> *"This certificate is legally admissible proof of data destruction. The QR code allows instant verification, and the digital signature prevents tampering."*
+
+> _"This certificate is legally admissible proof of data destruction. The QR code allows instant verification, and the digital signature prevents tampering."_
 
 ### **Phase 7: Verification Demo** (1 minute)
 
 **You Say**:
-> *"Let me prove this certificate is authentic and verifiable."*
+
+> _"Let me prove this certificate is authentic and verifiable."_
 
 **Actions**:
+
 1. **Take out smartphone**
 2. **Scan QR code** on certificate
 3. **Show verification website** loading
 4. **Display verification results**
 
 **Commentary**:
-> *"The verification shows the certificate is authentic, unmodified, and the wipe operation is confirmed. This gives organizations complete confidence for compliance reporting."*
+
+> _"The verification shows the certificate is authentic, unmodified, and the wipe operation is confirmed. This gives organizations complete confidence for compliance reporting."_
 
 ## 🎯 **Key Talking Points During Demo**
 
 ### **AI Innovation**
-- *"First AI-powered secure wiping tool in the world"*
-- *"AI selects optimal method automatically - no technical expertise needed"*
-- *"Smart error diagnosis and resolution"*
+
+- _"First AI-powered secure wiping tool in the world"_
+- _"AI selects optimal method automatically - no technical expertise needed"_
+- _"Smart error diagnosis and resolution"_
 
 ### **Security Excellence**
-- *"Military-grade wiping techniques"*
-- *"NIST SP 800-88 compliant"*
-- *"Tamper-proof logging with blockchain-style verification"*
+
+- _"Military-grade wiping techniques"_
+- _"NIST SP 800-88 compliant"_
+- _"Tamper-proof logging with blockchain-style verification"_
 
 ### **User Experience**
-- *"One-click operation for anyone"*
-- *"Works completely offline"*
-- *"No installation required - runs from USB"*
+
+- _"One-click operation for anyone"_
+- _"Works completely offline"_
+- _"No installation required - runs from USB"_
 
 ### **Business Impact**
-- *"Solves India's e-waste crisis by building trust"*
-- *"Enables safe IT asset recycling"*
-- *"Reduces compliance costs for organizations"*
+
+- _"Solves India's e-waste crisis by building trust"_
+- _"Enables safe IT asset recycling"_
+- _"Reduces compliance costs for organizations"_
 
 ## ⚠️ **Demo Safety Tips**
 
@@ -183,21 +214,22 @@
 
 ## 🔥 **"Wow Moments" to Emphasize**
 
-1. **Boot from USB**: *"Complete operating system on a USB stick"*
-2. **AI Device Cards**: *"Watch it instantly identify each device type"*
-3. **Real-time Progress**: *"See the actual data destruction happening"*
-4. **Certificate Generation**: *"Instant cryptographic proof"*
-5. **QR Verification**: *"Scan and verify in real-time"*
+1. **Boot from USB**: _"Complete operating system on a USB stick"_
+2. **AI Device Cards**: _"Watch it instantly identify each device type"_
+3. **Real-time Progress**: _"See the actual data destruction happening"_
+4. **Certificate Generation**: _"Instant cryptographic proof"_
+5. **QR Verification**: _"Scan and verify in real-time"_
 
 ## 🎤 **Closing Statement**
 
-> *"VeriWipe transforms a complex, technical process into a simple one-click operation. It gives people the confidence to safely recycle their devices, knowing their data is permanently destroyed with cryptographic proof. This isn't just a tool - it's the solution to India's e-waste trust problem."*
+> _"VeriWipe transforms a complex, technical process into a simple one-click operation. It gives people the confidence to safely recycle their devices, knowing their data is permanently destroyed with cryptographic proof. This isn't just a tool - it's the solution to India's e-waste trust problem."_
 
 ---
 
 ## 📱 **Emergency Backup Plan**
 
 If hardware fails during demo:
+
 1. **Have video recording** of working demo ready
 2. **Show certificate examples** on laptop
 3. **Demonstrate verification website** with pre-generated certificates
