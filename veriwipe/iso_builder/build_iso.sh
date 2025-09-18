@@ -130,50 +130,205 @@ set -e
 # Update package lists
 apt-get update
 
-# Install Python and dependencies
-apt-get install -y python3 python3-pip python3-venv
+# Install Python and dependencies with comprehensive packages
+echo "🐍 Installing Python environment..."
+apt-get install -y \
+    python3 \
+    python3-pip \
+    python3-dev \
+    python3-venv \
+    build-essential \
+    git \
+    curl \
+    wget \
+    software-properties-common
 
-# Install system tools for disk operations
-apt-get install -y hdparm nvme-cli smartmontools cryptsetup
-apt-get install -y util-linux parted gdisk
-apt-get install -y sg3-utils sdparm
+# Install PyQt5 and GUI dependencies with all required components
+echo "🖥️ Installing GUI dependencies..."
+apt-get install -y \
+    python3-pyqt5 \
+    python3-pyqt5.qtcore \
+    python3-pyqt5.qtgui \
+    python3-pyqt5.qtwidgets \
+    python3-pyqt5.qtsvg \
+    qtbase5-dev \
+    qt5-qmake \
+    qtbase5-dev-tools \
+    libxcb-xinerama0 \
+    libxcb1 \
+    libx11-xcb1 \
+    libxrender1 \
+    libxkbcommon-x11-0 \
+    libglu1-mesa
 
-# Install GUI dependencies
-apt-get install -y python3-pyqt5 python3-pyqt5.qtwidgets
+# Install cryptography and security libraries
+echo "🔐 Installing security dependencies..."
+apt-get install -y \
+    libssl-dev \
+    libffi-dev \
+    libcairo2-dev \
+    libpango1.0-dev \
+    libgdk-pixbuf2.0-dev \
+    libxml2-dev \
+    libxslt1-dev
 
-# Create virtual environment for VeriWipe
-python3 -m venv /opt/veriwipe/venv
+# Install system tools for disk operations with comprehensive coverage
+echo "💾 Installing disk utilities..."
+apt-get install -y \
+    hdparm \
+    nvme-cli \
+    smartmontools \
+    cryptsetup \
+    util-linux \
+    parted \
+    gdisk \
+    sg3-utils \
+    sdparm \
+    lsscsi
+
+# Install AI/ML system dependencies
+echo "🤖 Installing AI/ML dependencies..."
+apt-get install -y \
+    python3-numpy \
+    python3-scipy \
+    python3-sklearn \
+    libblas-dev \
+    liblapack-dev \
+    gfortran
+
+# Create virtual environment for VeriWipe with system packages
+echo "📦 Setting up VeriWipe environment..."
+python3 -m venv /opt/veriwipe/venv --system-site-packages
 source /opt/veriwipe/venv/bin/activate
 
-# Install Python packages
-pip install --upgrade pip
-pip install -r /opt/veriwipe/requirements.txt
+# Install Python packages with specific versions for stability
+echo "📚 Installing Python packages..."
+pip install --upgrade pip setuptools wheel
+pip install \
+    numpy>=1.21.0 \
+    scipy>=1.7.0 \
+    scikit-learn>=1.0.0 \
+    PyQt5>=5.15.4 \
+    cryptography>=3.4.8 \
+    reportlab>=3.6.0 \
+    "qrcode[pil]>=7.3.1" \
+    psutil>=5.8.0 \
+    pycryptodome>=3.15.0 \
+    flask>=2.0.0 \
+    pillow>=8.0.0 \
+    joblib \
+    threadpoolctl
 
-# Install additional packages that might not be in requirements.txt
-pip install scikit-learn cryptography reportlab qrcode[pil] psutil pycryptodome
+# Install from requirements.txt if available
+if [ -f /opt/veriwipe/requirements.txt ]; then
+    pip install -r /opt/veriwipe/requirements.txt
+fi
 
-# Create VeriWipe launcher script
-cat > /opt/veriwipe/veriwipe.sh << 'LAUNCHER'
+# Create smart VeriWipe launcher script with dependency management
+cat > /opt/veriwipe/veriwipe_launcher.sh << 'LAUNCHER'
 #!/bin/bash
+# VeriWipe Smart Launcher - Handles dependencies and environment automatically
+
+set -e
+
+# Colors for output
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+BLUE='\033[0;34m'
+NC='\033[0m' # No Color
+
+log() {
+    echo -e "${BLUE}[VeriWipe]${NC} $1"
+}
+
+error() {
+    echo -e "${RED}[ERROR]${NC} $1"
+    exit 1
+}
+
+success() {
+    echo -e "${GREEN}[SUCCESS]${NC} $1"
+}
+
+# Change to VeriWipe directory
 cd /opt/veriwipe
-source venv/bin/activate
+
+# Activate virtual environment
+if [ -f "venv/bin/activate" ]; then
+    source venv/bin/activate
+    log "Environment activated"
+else
+    error "Virtual environment not found. Please reinstall VeriWipe."
+fi
+
+# Set up environment variables
 export PYTHONPATH="/opt/veriwipe/src:$PYTHONPATH"
-python3 src/gui/main_window.py
+export QT_QPA_PLATFORM_PLUGIN_PATH=/usr/lib/x86_64-linux-gnu/qt5/plugins/platforms
+
+# Check for root privileges if needed for disk operations
+if [ "$1" != "--check-only" ] && [ "$(id -u)" -ne 0 ]; then
+    log "VeriWipe requires root privileges for disk operations"
+    exec sudo -E "$0" "$@"
+fi
+
+# Run smart dependency check
+log "Verifying dependencies..."
+if python3 -c "
+import sys
+sys.path.insert(0, '/opt/veriwipe/src')
+try:
+    from utils.smart_dependency_manager import smart_dependency_check
+    if smart_dependency_check():
+        print('✅ All dependencies satisfied')
+    else:
+        print('❌ Some dependencies missing')
+        sys.exit(1)
+except ImportError:
+    # Fallback to basic check
+    try:
+        import PyQt5, cryptography, reportlab, qrcode, sklearn
+        print('✅ Basic dependencies OK')
+    except ImportError as e:
+        print(f'❌ Missing dependency: {e}')
+        sys.exit(1)
+except Exception as e:
+    print(f'⚠️ Dependency check warning: {e}')
+    # Continue anyway in live environment
+"; then
+    success "Ready to launch"
+else
+    error "Dependency verification failed"
+fi
+
+# Launch VeriWipe based on arguments
+if [ "$1" = "--cli" ]; then
+    log "Starting VeriWipe CLI mode..."
+    python3 veriwipe.py --cli "${@:2}"
+elif [ "$1" = "--check-only" ]; then
+    success "VeriWipe is ready to use"
+else
+    log "Starting VeriWipe GUI..."
+    python3 veriwipe.py "${@}"
+fi
 LAUNCHER
 
-chmod +x /opt/veriwipe/veriwipe.sh
+chmod +x /opt/veriwipe/veriwipe_launcher.sh
 
-# Create desktop entry
+# Create enhanced desktop entry
 mkdir -p /home/ubuntu/Desktop
 cat > /home/ubuntu/Desktop/VeriWipe.desktop << 'DESKTOP'
 [Desktop Entry]
-Name=VeriWipe
-Comment=AI-Powered Secure Data Wiping
-Exec=/opt/veriwipe/veriwipe.sh
-Icon=/opt/veriwipe/config/veriwipe-icon.png
+Name=VeriWipe - Secure Data Wiping
+GenericName=Data Destruction Tool
+Comment=AI-Powered Secure Data Wiping with Certificate Generation
+Exec=/opt/veriwipe/veriwipe_launcher.sh
+Icon=/opt/veriwipe/assets/veriwipe-icon.png
 Terminal=false
 Type=Application
-Categories=System;Security;
+Categories=System;Security;Utility;
+Keywords=wipe;secure;delete;data;destruction;privacy;
+StartupNotify=true
 DESKTOP
 
 chmod +x /home/ubuntu/Desktop/VeriWipe.desktop
@@ -182,9 +337,57 @@ chmod +x /home/ubuntu/Desktop/VeriWipe.desktop
 mkdir -p /usr/share/applications
 cp /home/ubuntu/Desktop/VeriWipe.desktop /usr/share/applications/
 
-# Set up autostart for VeriWipe
-mkdir -p /home/ubuntu/.config/autostart
-cp /home/ubuntu/Desktop/VeriWipe.desktop /home/ubuntu/.config/autostart/
+# Create CLI shortcut for easy command-line access
+cat > /usr/local/bin/veriwipe << 'CLI'
+#!/bin/bash
+# VeriWipe CLI shortcut
+exec /opt/veriwipe/veriwipe_launcher.sh "$@"
+CLI
+
+chmod +x /usr/local/bin/veriwipe
+
+# Create icon directory and placeholder
+mkdir -p /opt/veriwipe/assets
+if [ ! -f "/opt/veriwipe/assets/veriwipe-icon.png" ]; then
+    # Try to create a simple icon or use system icon
+    convert -size 64x64 xc:blue -fill white -pointsize 20 -gravity center \
+            -annotate +0+0 "VW" /opt/veriwipe/assets/veriwipe-icon.png 2>/dev/null || \
+    cp /usr/share/pixmaps/ubuntu-logo.png /opt/veriwipe/assets/veriwipe-icon.png 2>/dev/null || \
+    echo "Warning: Could not create VeriWipe icon"
+fi
+
+# Set up log directory with proper permissions
+mkdir -p /var/log/veriwipe
+chmod 755 /var/log/veriwipe
+
+# Create welcome message script
+cat > /opt/veriwipe/welcome.sh << 'WELCOME'
+#!/bin/bash
+echo "=================================================="
+echo "🛡️  VeriWipe Live Environment Ready!"
+echo "=================================================="
+echo ""
+echo "🚀 Quick Start:"
+echo "   Desktop: Double-click VeriWipe icon"
+echo "   Terminal: type 'veriwipe' or 'veriwipe --cli'"
+echo ""
+echo "🎯 Features:"
+echo "   • AI-powered device detection"
+echo "   • NIST-compliant secure wiping" 
+echo "   • Tamper-proof certificates"
+echo "   • Real-time progress tracking"
+echo ""
+echo "⚠️  Safety: Always verify device before wiping!"
+echo "📖 Help: veriwipe --help"
+echo "=================================================="
+WELCOME
+
+chmod +x /opt/veriwipe/welcome.sh
+
+# Add welcome to bashrc for user guidance
+echo "" >> /home/ubuntu/.bashrc
+echo "# VeriWipe live environment" >> /home/ubuntu/.bashrc
+echo "/opt/veriwipe/welcome.sh" >> /home/ubuntu/.bashrc
 
 # Create AI models directory
 mkdir -p /opt/veriwipe/models

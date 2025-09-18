@@ -28,7 +28,16 @@ def setup_logging(log_level: str = "INFO"):
     )
 
 def check_dependencies():
-    """Check if all required dependencies are available"""
+    """Smart dependency checking with auto-fix capability"""
+    try:
+        from utils.smart_dependency_manager import smart_dependency_check
+        return smart_dependency_check()
+    except ImportError:
+        # Fallback to basic dependency check if smart manager isn't available
+        return _basic_dependency_check()
+
+def _basic_dependency_check():
+    """Basic dependency check (fallback)"""
     missing_deps = []
     
     try:
@@ -52,8 +61,9 @@ def check_dependencies():
         missing_deps.append("qrcode")
     
     if missing_deps:
-        print(f"Error: Missing dependencies: {', '.join(missing_deps)}")
-        print("Please install with: pip install -r requirements.txt")
+        print(f"❌ Missing dependencies: {', '.join(missing_deps)}")
+        print("🔨 Quick Fix: sudo python3 veriwipe.py --auto-fix")
+        print("📖 Or run: ./setup_ubuntu.sh")
         return False
     
     return True
@@ -191,12 +201,38 @@ Examples:
     )
     
     parser.add_argument(
+        '--auto-fix',
+        action='store_true',
+        help='Automatically install missing dependencies (requires root)'
+    )
+    
+    parser.add_argument(
         '--version',
         action='version',
         version='VeriWipe v1.0.0 - Smart India Hackathon 2025'
     )
     
     args = parser.parse_args()
+    
+    # Handle auto-fix mode first
+    if args.auto_fix:
+        if os.geteuid() != 0:
+            print("❌ Auto-fix requires root privileges. Run with sudo.")
+            return 1
+        
+        try:
+            from utils.smart_dependency_manager import SmartDependencyManager
+            manager = SmartDependencyManager()
+            success = manager.check_all_dependencies()
+            if success:
+                print("✅ All dependencies satisfied!")
+                return 0
+            else:
+                print("❌ Auto-fix failed. Check logs for details.")
+                return 1
+        except Exception as e:
+            print(f"❌ Auto-fix error: {e}")
+            return 1
     
     # Set up logging
     setup_logging(args.log_level)

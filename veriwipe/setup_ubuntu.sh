@@ -1,11 +1,11 @@
 #!/bin/bash
 # VeriWipe Ubuntu Setup and Troubleshooting Script
-# Run this in your Ubuntu VM to fix dependency issues
+# Enhanced with AI-powered dependency management
 
 set -e
 
-echo "🔧 VeriWipe Ubuntu Setup & Troubleshooting"
-echo "=========================================="
+echo "🔧 VeriWipe Smart Ubuntu Setup"
+echo "=============================="
 
 # Colors for output
 RED='\033[0;31m'
@@ -24,6 +24,7 @@ warn() {
 
 error() {
     echo -e "${RED}[ERROR]${NC} $1"
+    exit 1
 }
 
 success() {
@@ -47,11 +48,12 @@ update_system() {
     success "System updated"
 }
 
-# Install system dependencies
+# Install comprehensive system dependencies
 install_system_deps() {
-    log "Installing system dependencies..."
+    log "Installing comprehensive system dependencies..."
     
-    # Essential build tools
+    # Essential build tools and Python
+    log "Installing Python environment..."
     sudo apt install -y \
         python3 \
         python3-pip \
@@ -60,19 +62,29 @@ install_system_deps() {
         build-essential \
         git \
         curl \
-        wget
+        wget \
+        software-properties-common
     
-    # PyQt5 system dependencies
+    # PyQt5 system dependencies with all components
+    log "Installing GUI framework..."
     sudo apt install -y \
         python3-pyqt5 \
         python3-pyqt5.qtcore \
         python3-pyqt5.qtgui \
         python3-pyqt5.qtwidgets \
+        python3-pyqt5.qtsvg \
         qtbase5-dev \
         qt5-qmake \
-        qtbase5-dev-tools
+        qtbase5-dev-tools \
+        libxcb-xinerama0 \
+        libxcb1 \
+        libx11-xcb1 \
+        libxrender1 \
+        libxkbcommon-x11-0 \
+        libglu1-mesa
     
-    # Cryptography dependencies
+    # Cryptography and security dependencies
+    log "Installing security libraries..."
     sudo apt install -y \
         libssl-dev \
         libffi-dev \
@@ -83,35 +95,51 @@ install_system_deps() {
         libxslt1-dev
     
     # Storage/disk utilities
+    log "Installing disk utilities..."
     sudo apt install -y \
         hdparm \
         nvme-cli \
         smartmontools \
         parted \
-        util-linux
+        util-linux \
+        cryptsetup \
+        lsscsi \
+        sg3-utils \
+        sdparm
+    
+    # AI/ML system dependencies
+    log "Installing AI/ML system libraries..."
+    sudo apt install -y \
+        python3-numpy \
+        python3-scipy \
+        python3-sklearn \
+        libblas-dev \
+        liblapack-dev \
+        gfortran
     
     success "System dependencies installed"
 }
 
-# Create virtual environment
+# Create or update virtual environment
 setup_venv() {
     log "Setting up Python virtual environment..."
     
     if [ -d "venv" ]; then
-        warn "Virtual environment already exists. Removing..."
+        warn "Virtual environment already exists. Recreating..."
         rm -rf venv
     fi
     
-    python3 -m venv venv
+    # Create venv with system packages for better compatibility
+    python3 -m venv venv --system-site-packages
     source venv/bin/activate
     
-    # Upgrade pip
-    pip install --upgrade pip
+    # Upgrade pip and core tools
+    pip install --upgrade pip setuptools wheel
     
     success "Virtual environment created"
 }
 
-# Install Python dependencies
+# Install Python dependencies with error handling
 install_python_deps() {
     log "Installing Python dependencies..."
     
@@ -120,41 +148,38 @@ install_python_deps() {
         source venv/bin/activate
     fi
     
-    # Install dependencies one by one for better error tracking
-    log "Installing NumPy..."
-    pip install numpy>=1.21.0
+    # Install dependencies with specific versions for stability
+    log "Installing core scientific libraries..."
+    pip install \
+        numpy>=1.21.0 \
+        scipy>=1.7.0 \
+        scikit-learn>=1.0.0
     
-    log "Installing SciPy..."
-    pip install scipy>=1.7.0
-    
-    log "Installing scikit-learn..."
-    pip install scikit-learn>=1.0.0
-    
-    log "Installing cryptography..."
-    pip install cryptography>=3.4.8
-    
-    log "Installing PyQt5..."
+    log "Installing GUI framework..."
     pip install PyQt5>=5.15.4
     
-    log "Installing ReportLab..."
-    pip install reportlab>=3.6.0
+    log "Installing security libraries..."
+    pip install \
+        cryptography>=3.4.8 \
+        pycryptodome>=3.15.0
     
-    log "Installing QRCode..."
-    pip install "qrcode[pil]>=7.3.1"
+    log "Installing document generation..."
+    pip install \
+        reportlab>=3.6.0 \
+        "qrcode[pil]>=7.3.1" \
+        pillow>=8.0.0
     
-    log "Installing psutil..."
-    pip install psutil>=5.8.0
+    log "Installing system utilities..."
+    pip install \
+        psutil>=5.8.0 \
+        flask>=2.0.0
     
-    log "Installing pycryptodome..."
-    pip install pycryptodome>=3.15.0
+    log "Installing ML support libraries..."
+    pip install \
+        joblib \
+        threadpoolctl
     
-    log "Installing Flask..."
-    pip install flask>=2.0.0
-    
-    log "Installing Pillow..."
-    pip install pillow>=8.0.0
-    
-    # Install from requirements.txt as backup
+    # Install from requirements.txt as final step
     if [ -f "requirements.txt" ]; then
         log "Installing from requirements.txt..."
         pip install -r requirements.txt
@@ -163,7 +188,7 @@ install_python_deps() {
     success "Python dependencies installed"
 }
 
-# Test imports
+# Test all imports comprehensively
 test_imports() {
     log "Testing Python imports..."
     
@@ -173,57 +198,51 @@ test_imports() {
     
     python3 -c "
 import sys
-print(f'Python version: {sys.version}')
+print(f'🐍 Python version: {sys.version}')
+print()
 
-try:
-    import PyQt5
-    print('✅ PyQt5: OK')
-except ImportError as e:
-    print(f'❌ PyQt5: {e}')
+# Test core dependencies
+deps = [
+    ('PyQt5', 'GUI Framework'),
+    ('cryptography', 'Security Library'),
+    ('reportlab', 'PDF Generation'),
+    ('qrcode', 'QR Code Generation'),
+    ('sklearn', 'Machine Learning'),
+    ('numpy', 'Numerical Computing'),
+    ('scipy', 'Scientific Computing'),
+    ('psutil', 'System Utilities'),
+    ('flask', 'Web Framework'),
+    ('PIL', 'Image Processing')
+]
 
-try:
-    import cryptography
-    print('✅ cryptography: OK')
-except ImportError as e:
-    print(f'❌ cryptography: {e}')
+all_ok = True
+for module, description in deps:
+    try:
+        if module == 'sklearn':
+            import sklearn
+        elif module == 'PIL':
+            import PIL
+        else:
+            __import__(module)
+        print(f'✅ {module:12} ({description})')
+    except ImportError as e:
+        print(f'❌ {module:12} ({description}) - {e}')
+        all_ok = False
 
-try:
-    import reportlab
-    print('✅ reportlab: OK')
-except ImportError as e:
-    print(f'❌ reportlab: {e}')
-
-try:
-    import qrcode
-    print('✅ qrcode: OK')
-except ImportError as e:
-    print(f'❌ qrcode: {e}')
-
-try:
-    import sklearn
-    print('✅ scikit-learn: OK')
-except ImportError as e:
-    print(f'❌ scikit-learn: {e}')
-
-try:
-    import numpy
-    print('✅ numpy: OK')
-except ImportError as e:
-    print(f'❌ numpy: {e}')
-
-try:
-    import psutil
-    print('✅ psutil: OK')
-except ImportError as e:
-    print(f'❌ psutil: {e}')
+print()
+if all_ok:
+    print('✅ All dependencies successfully imported!')
+else:
+    print('❌ Some dependencies failed to import')
+    sys.exit(1)
 "
     
-    success "Import test completed"
+    success "Import test completed successfully"
 }
 
-# Test VeriWipe launch
+# Test VeriWipe functionality
 test_veriwipe() {
-    log "Testing VeriWipe launch..."
+    log "Testing VeriWipe functionality..."
     
     if [[ "$VIRTUAL_ENV" == "" ]]; then
         source venv/bin/activate
@@ -234,58 +253,90 @@ test_veriwipe() {
         return 1
     fi
     
-    log "Testing dependency check..."
+    log "Testing smart dependency manager..."
     python3 -c "
 import sys
 import os
 sys.path.insert(0, os.path.join(os.path.dirname('__file__'), 'src'))
 
-def check_dependencies():
-    missing_deps = []
-    
-    try:
-        import PyQt5
-    except ImportError:
-        missing_deps.append('PyQt5')
-    
-    try:
-        import cryptography
-    except ImportError:
-        missing_deps.append('cryptography')
-    
-    try:
-        import reportlab
-    except ImportError:
-        missing_deps.append('reportlab')
-    
-    try:
-        import qrcode
-    except ImportError:
-        missing_deps.append('qrcode')
-    
-    if missing_deps:
-        print(f'Missing dependencies: {missing_deps}')
-        return False
+try:
+    from utils.smart_dependency_manager import smart_dependency_check
+    if smart_dependency_check():
+        print('✅ Smart dependency check passed')
     else:
-        print('✅ All dependencies available')
-        return True
-
-check_dependencies()
+        print('❌ Smart dependency check failed')
+        sys.exit(1)
+except ImportError:
+    print('⚠️ Smart dependency manager not found, testing basic dependencies...')
+    
+    # Test basic imports
+    try:
+        import PyQt5, cryptography, reportlab, qrcode
+        print('✅ Basic dependencies available')
+    except ImportError as e:
+        print(f'❌ Basic dependency missing: {e}')
+        sys.exit(1)
+except Exception as e:
+    print(f'❌ Dependency test error: {e}')
+    sys.exit(1)
 "
     
-    success "VeriWipe dependency check completed"
+    success "VeriWipe dependency test completed"
+}
+
+# Create convenient launcher scripts
+create_launchers() {
+    log "Creating launcher scripts..."
+    
+    # Create smart launcher
+    cat > veriwipe_launcher.sh << 'LAUNCHER'
+#!/bin/bash
+# VeriWipe Smart Launcher for development environment
+
+# Navigate to script directory
+cd "$(dirname "$0")"
+
+# Activate virtual environment
+if [ -f "venv/bin/activate" ]; then
+    source venv/bin/activate
+else
+    echo "❌ Virtual environment not found. Run ./setup_ubuntu.sh first."
+    exit 1
+fi
+
+# Set environment
+export PYTHONPATH="$(pwd)/src:$PYTHONPATH"
+export QT_QPA_PLATFORM_PLUGIN_PATH=/usr/lib/x86_64-linux-gnu/qt5/plugins/platforms
+
+# Check for root if needed
+if [ "$1" != "--check-only" ] && [ "$(id -u)" -ne 0 ]; then
+    echo "🔐 VeriWipe requires root privileges for disk operations"
+    exec sudo -E "$0" "$@"
+fi
+
+# Run VeriWipe
+if [ "$1" = "--cli" ]; then
+    python3 veriwipe.py --cli "${@:2}"
+else
+    python3 veriwipe.py "${@}"
+fi
+LAUNCHER
+    
+    chmod +x veriwipe_launcher.sh
+    
+    success "Launcher scripts created"
 }
 
 # Main setup function
 main() {
     echo
-    log "Starting VeriWipe setup..."
+    log "Starting comprehensive VeriWipe setup..."
     
     check_root
     echo
     
-    read -p "Update system packages? (y/N): " update_sys
-    if [[ $update_sys =~ ^[Yy]$ ]]; then
+    read -p "Update system packages? (Y/n): " update_sys
+    if [[ ! $update_sys =~ ^[Nn]$ ]]; then
         update_system
         echo
     fi
@@ -305,17 +356,47 @@ main() {
     test_veriwipe
     echo
     
-    success "Setup completed!"
+    create_launchers
     echo
-    log "To run VeriWipe:"
-    echo "  1. Activate virtual environment: source venv/bin/activate"
-    echo "  2. Run with GUI: sudo ./venv/bin/python veriwipe.py --gui"
-    echo "  3. Or run CLI: sudo ./venv/bin/python veriwipe.py --help"
+    
+    success "🎉 VeriWipe setup completed successfully!"
     echo
-    warn "Note: VeriWipe requires root privileges for disk operations"
+    log "🚀 How to run VeriWipe:"
+    echo "  GUI Mode:  ./veriwipe_launcher.sh"
+    echo "  CLI Mode:  ./veriwipe_launcher.sh --cli"
+    echo "  With venv: source venv/bin/activate && sudo python3 veriwipe.py"
+    echo
+    warn "💡 VeriWipe requires root privileges for disk operations"
+    warn "🔒 Always verify device selection before wiping!"
 }
 
-# Run if executed directly
-if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
-    main "$@"
-fi
+# Command line options
+case "${1:-}" in
+    --auto-fix)
+        log "Running auto-fix mode..."
+        main
+        ;;
+    --test-only)
+        log "Running dependency test only..."
+        if [ -d "venv" ]; then
+            source venv/bin/activate
+            test_imports
+            test_veriwipe
+        else
+            error "Virtual environment not found. Run setup first."
+        fi
+        ;;
+    --help)
+        echo "VeriWipe Setup Script"
+        echo "Usage: $0 [OPTION]"
+        echo ""
+        echo "Options:"
+        echo "  (none)      Interactive setup"
+        echo "  --auto-fix  Automatic setup without prompts"
+        echo "  --test-only Test existing installation"
+        echo "  --help      Show this help"
+        ;;
+    *)
+        main "$@"
+        ;;
+esac
